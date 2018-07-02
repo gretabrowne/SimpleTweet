@@ -12,13 +12,13 @@ public class Tweet {
     public String createdAt;
 
     // deserialize the data
-    public static Tweet fromJSONObject(JSONObject jsonObject) throws JSONException {
+    public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
 
         // extract values from JSON
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
-        tweet.createdAt = jsonObject.getString("created at");
+        tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         return tweet;
     }
