@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.codepath.apps.restclienttemplate"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 27
 
         // Room schemas
