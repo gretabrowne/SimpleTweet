@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.apis.TwitterApi;
@@ -21,12 +22,13 @@ import com.loopj.android.http.RequestParams;
  * 
  */
 
+
 // used by all activities
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance(); // Change this-- to what?
 	public static final String REST_URL = "https://api.twitter.com/1.1";
-	public static final String REST_CONSUMER_KEY = "Dw0TtP17Lht9jxLo4Dtax8Nq1";
-	public static final String REST_CONSUMER_SECRET = "2bkPiKw57DLmn3fUkcBJ6w840Uk6phs6vt8sbi9Qfz1NhzELoJ";
+	// public static final String REST_CONSUMER_KEY = "Dw0TtP17Lht9jxLo4Dtax8Nq1";
+	// public static final String REST_CONSUMER_SECRET = "2bkPiKw57DLmn3fUkcBJ6w840Uk6phs6vt8sbi9Qfz1NhzELoJ";
 
 	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
 	public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
@@ -37,8 +39,8 @@ public class TwitterClient extends OAuthBaseClient {
 	public TwitterClient(Context context) {
 		super(context, REST_API_INSTANCE,
 				REST_URL,
-				REST_CONSUMER_KEY,
-				REST_CONSUMER_SECRET,
+				context.getString(R.string.api_key),
+				context.getString(R.string.rest_consumer_secret),
 				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
@@ -68,4 +70,55 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("status", message);
 		client.post(apiUrl, params, handler);
 	}
+
+	public void replyToTweet (String message, long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status", message);
+		// Log.d("TwitterClient2", String.format("%s", id));
+		params.put("in_reply_to_status_id", id);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void favoriteTweet (boolean isFavorited, long id, AsyncHttpResponseHandler handler) {
+		if (!isFavorited) {
+			Log.i("TwitterClient", "favoriting tweet");
+			String apiUrl = getApiUrl("favorites/create.json");
+			RequestParams params = new RequestParams();
+			params.put("id", id);
+			client.post(apiUrl, params, handler);
+
+			// update favorited info
+//			String otherApiUrl = getApiUrl("statuses/update.json");
+//			RequestParams params2 = new RequestParams();
+//			params.put("id", id);
+//			params.put("favorited", true);
+//			params.put("status", message);
+//			client.post(otherApiUrl, params2, handler);
+		}
+		else {
+			// favorited already
+			Log.i("TwitterClient", "unfavoriting tweet");
+			String apiUrl = getApiUrl("favorites/destroy.json");
+			RequestParams params = new RequestParams();
+			params.put("id", id);
+			client.post(apiUrl, params, handler);
+
+			// update favorited info
+//			String otherApiUrl = getApiUrl("statuses/update.json");
+//			RequestParams params2 = new RequestParams();
+//			params.put("id", id);
+//			params.put("favorited", false);
+//			params.put("status", message);
+//			client.post(otherApiUrl, params2, handler);
+		}
+	}
+
+	public void retweet (long id, AsyncHttpResponseHandler handler) {
+	    String apiUrl = getApiUrl("statuses/retweet/" + id + ".json");
+	    Log.d("RetweetInTwitterClient", "reached this point");
+        RequestParams params = new RequestParams();
+        params.put("id", id);
+        client.post(apiUrl, params, handler);
+    }
 }

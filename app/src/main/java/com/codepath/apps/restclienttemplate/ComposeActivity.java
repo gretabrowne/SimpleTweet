@@ -24,26 +24,92 @@ public class ComposeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+        if (getIntent().getStringExtra("screenName") != null) {
+            Log.d("ComposeActivity", "got into if statement");
+            EditText etTweet = findViewById(R.id.etTweet);
+            etTweet.setText("@" + getIntent().getStringExtra("screenName"));
+        }
+
     }
 
+    // todo-- clean this up
+    // when compose button is hit
     public void onClick(View v) {
         TwitterClient tc = new TwitterClient(this);
         EditText etTweet = findViewById(R.id.etTweet);
         String tweet = etTweet.getText().toString();
-        tc.sendTweet(tweet, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("TwitterClient", response.toString());
-                Tweet tw = new Tweet();
-                try {
-                    tw.fromJSON(response);
-                    Intent i = new Intent(ComposeActivity.this, TimelineActivity.class);
-                    i.putExtra("tweet", Parcels.wrap(tw));
-                    startActivity(i);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if (getIntent().getStringExtra("screenName") != null) {
+            // replying to someone else's tweet
+            tc.replyToTweet(tweet, getIntent().getLongExtra("uid", 0), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("TwitterClient", response.toString());
+                    // Log.d("ComposeActivity1", String.format("%s", getIntent().getStringExtra("uid")));
+                    Tweet tw = new Tweet();
+                    try {
+                        tw.fromJSON(response);
+                        Intent i = new Intent(ComposeActivity.this, TimelineActivity.class);
+                        i.putExtra("tweet", Parcels.wrap(tw));
+                        finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("TwitterClient", responseString);
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    Log.d("TwitterClient", errorResponse.toString());
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("TwitterClient", errorResponse.toString());
+                    throwable.printStackTrace();
+                }
+            });
+        }
+        else {
+            // if new tweet (not a reply)
+
+            tc.sendTweet(tweet, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Log.d("TwitterClient", response.toString());
+                        Tweet tw = new Tweet();
+                        try {
+                            tw.fromJSON(response);
+                            Intent i = new Intent(ComposeActivity.this, TimelineActivity.class);
+                            i.putExtra("tweet", Parcels.wrap(tw));
+                            startActivity(i);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("TwitterClient", responseString);
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    Log.d("TwitterClient", errorResponse.toString());
+                    throwable.printStackTrace();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("TwitterClient", errorResponse.toString());
+                    throwable.printStackTrace();
+                }
+            });
+        }
 
 //            @Override
 //            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -64,24 +130,6 @@ public class ComposeActivity extends AppCompatActivity {
 //                }
 //            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-        });
     }
 
     public void onSubmit(View v) {
