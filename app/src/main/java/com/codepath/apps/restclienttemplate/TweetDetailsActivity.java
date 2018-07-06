@@ -38,6 +38,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvCreatedAt) TextView dateCreated;
     @BindView(R.id.tvName) TextView tvName;
     @BindView(R.id.ibFavorite) ImageButton ibFavorite;
+    @BindView(R.id.tvFaveCount) TextView tvFaveCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvUsername.setText("@" + u.getScreenName());
         tvName.setText(tweet.user.name);
         tvBody.setText(tweet.getBody());
+        tvFaveCount.setText(tweet.getFaveCount());
         dateCreated.setText(tweet.getRelativeTimeAgo());
         String profUrl = u.getProfileImageUrl();
         Glide.with(this)
@@ -77,10 +79,14 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 try {
                     tw.fromJSON(response);
                     if (isFavorited) {
+                        // tweet.setFaveCount("" + tweet.getFaveCount() + 1);
+                        // tvFaveCount.setText(tweet.getFaveCount());
                         Log.d("TweetDetailsActivity", "changing favorited boolean to false");
                         isFavorited = false;
                     }
                     else {
+                        // tweet.setFaveCount("" + tweet.getFaveCount() + 1);
+                        tvFaveCount.setText(tweet.getFaveCount());
                         Log.d("TweetDetailsActivity", "changing favorited boolean to true");
                         isFavorited = true;
                     }
@@ -142,7 +148,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
+                Log.d("TweetDetailsActivity", errorResponse.toString());
                 throwable.printStackTrace();
             }
 

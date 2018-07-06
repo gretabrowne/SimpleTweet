@@ -25,4 +25,12 @@ public class User implements Serializable {
 
         return user;
     }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
 }

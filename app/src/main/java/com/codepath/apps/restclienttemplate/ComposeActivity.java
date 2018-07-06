@@ -16,17 +16,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class ComposeActivity extends AppCompatActivity {
     AsyncHttpResponseHandler handler;
+    EditText etTweet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+        ButterKnife.bind(this);
+        etTweet = (EditText) findViewById(R.id.etTweet);
         if (getIntent().getStringExtra("screenName") != null) {
             Log.d("ComposeActivity", "got into if statement");
-            EditText etTweet = findViewById(R.id.etTweet);
             etTweet.setText("@" + getIntent().getStringExtra("screenName"));
         }
 
@@ -36,7 +39,7 @@ public class ComposeActivity extends AppCompatActivity {
     // when compose button is hit
     public void onClick(View v) {
         TwitterClient tc = new TwitterClient(this);
-        EditText etTweet = findViewById(R.id.etTweet);
+        // EditText etTweet = findViewById(R.id.etTweet);
         String tweet = etTweet.getText().toString();
         if (getIntent().getStringExtra("screenName") != null) {
             // replying to someone else's tweet

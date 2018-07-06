@@ -29,6 +29,8 @@
         android:layout_height="99dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/ivProfile"
+        android:autoLink="all"
+        android:linksClickable="true"
         android:text="TextView" />
 
     <TextView
@@ -46,7 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/ivProfile"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textStyle="bold" />
 
     <ImageButton
         android:id="@+id/ibFavorite"
@@ -56,7 +59,8 @@
         android:layout_below="@+id/tvBody2"
         android:onClick="onFavoritesClick"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/grey_heart" />
+        app:srcCompat="@drawable/favorite_selector" />
+
 
     <ImageButton
         android:id="@+id/ibRetweet"
@@ -67,5 +71,14 @@
         android:layout_marginEnd="105dp"
         android:onClick="onRetweetClick"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/retweet" />
+        app:srcCompat="@drawable/ic_vector_retweet" />
+
+    <TextView
+        android:id="@+id/tvFaveCount"
+        android:layout_width="31dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvCreatedAt"
+        android:layout_marginEnd="68dp"
+        android:text="TextView" />
 </RelativeLayout>

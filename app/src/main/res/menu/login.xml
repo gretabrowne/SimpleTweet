@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/miCompose"
-        android:icon="@drawable/twitter_icon"
+        android:icon="@drawable/ic_vector_compose"
         android:onClick="onBtnClick"
         app:showAsAction="ifRoom"
         android:title="Compose">

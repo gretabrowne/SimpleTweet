@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.models;
 
 import android.text.format.DateUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
@@ -17,6 +18,8 @@ public class Tweet {
     public long uid;
     public User user;
     public String createdAt;
+    public String embedUrl;
+    public String faveCount;
 
     public Tweet() {}
     // deserialize the data
@@ -28,6 +31,17 @@ public class Tweet {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        tweet.faveCount = jsonObject.getString("favorite_count");
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        try {
+            JSONArray media = entities.getJSONArray("media");
+                    if (media.length() != 0) {
+                        tweet.embedUrl = media.getJSONObject(0).getString("media_url");
+                    }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         return tweet;
     }
@@ -50,4 +64,23 @@ public class Tweet {
         return relativeDate;
     }
 
+    public long getUid() {
+        return uid;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getFaveCount() {
+        return faveCount;
+    }
 }

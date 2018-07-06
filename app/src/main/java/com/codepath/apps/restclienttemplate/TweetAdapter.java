@@ -20,6 +20,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
@@ -57,6 +58,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
 
+        Glide.with(context).load(tweet.embedUrl).into(holder.ivEmbedImage);
+
         holder.ibReply.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // get tweet at position
@@ -73,20 +76,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     // create viewholder class
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public ImageView ivProfileImage;
-        public TextView tvUserName;
-        public TextView tvBody;
-        public TextView tvDateTime;
-        public ImageButton ibReply;
+        @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+        @BindView(R.id.tvUserName) TextView tvUserName;
+        @BindView(R.id.tvBody) TextView tvBody;
+        @BindView(R.id.tvDateTime) TextView tvDateTime;
+        @BindView(R.id.ibReply) ImageButton ibReply;
+        @BindView(R.id.ivEmbeddedImage) ImageView ivEmbedImage;
 
         public ViewHolder (View itemView) {
             super (itemView);
-
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
-            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvBody = (TextView) itemView.findViewById(R.id.tvBody);
-            tvDateTime = (TextView) itemView.findViewById(R.id.tvDateTime);
-            ibReply = (ImageButton) itemView.findViewById(R.id.ibReply);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
