@@ -47,9 +47,6 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 fetchTimelineAsync(0);
             }
         });
@@ -70,20 +67,6 @@ public class TimelineActivity extends AppCompatActivity {
         // recycler view setup
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(tweetAdapter);
-
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        rvTweets.setLayoutManager(linearLayoutManager);
-//
-//        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                // Triggered only when new data needs to be appended to the list
-//                // Add whatever code is needed to append new items to the bottom of the list
-//                fetchTimelineAsync(page);
-//            }
-//        };
-//        rvTweets.addOnScrollListener(scrollListener);
-
         populateTimeline();
     }
 
@@ -108,6 +91,7 @@ public class TimelineActivity extends AppCompatActivity {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
                         tweets.add(tweet);
                         tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                        rvTweets.scrollToPosition(0);
                     } catch (JSONException e){
                         e.printStackTrace();
                     }
@@ -115,7 +99,6 @@ public class TimelineActivity extends AppCompatActivity {
                 hideProgressBar();
                 tweetAdapter.addAll(tweets);
                 swipeContainer.setRefreshing(false);
-                // scrollListener.resetState();
             }
 
             @Override
@@ -195,7 +178,7 @@ public class TimelineActivity extends AppCompatActivity {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
                         tweets.add(tweet);
                         tweetAdapter.notifyItemInserted(tweets.size() - 1);
-                        rvTweets.scrollToPosition(tweetAdapter.getItemCount() - 1);
+                        rvTweets.scrollToPosition(0);
                     } catch (JSONException e){
                         e.printStackTrace();
                     }

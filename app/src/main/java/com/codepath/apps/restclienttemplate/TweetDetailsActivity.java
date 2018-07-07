@@ -56,7 +56,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvUsername.setText("@" + u.getScreenName());
         tvName.setText(tweet.user.name);
         tvBody.setText(tweet.getBody());
-        tvFaveCount.setText(tweet.getFaveCount());
+        tvFaveCount.setText("" + tweet.getFaveCount());
         dateCreated.setText(tweet.getRelativeTimeAgo());
         String profUrl = u.getProfileImageUrl();
         Glide.with(this)
@@ -65,28 +65,34 @@ public class TweetDetailsActivity extends AppCompatActivity {
     }
 
     // when favorites button is clicked
-    public void onFavoritesClick (View view) {
+    public void onFavoritesClick (final View view) {
             // make api call for favoriting
-    Log.i("onFavoritesClick", "check");
+        Log.i("onFavoritesClick", "check");
         TwitterClient tc = new TwitterClient(this);
         Log.i("onFavoritesClick", "check2");
         tc.favoriteTweet(isFavorited, tweet.getUid(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
-                // Log.d("ComposeActivity1", String.format("%s", getIntent().getStringExtra("uid")));
+                Log.d("ComposeActivity1", String.format("%s", getIntent().getStringExtra("uid")));
                 Tweet tw = new Tweet();
                 try {
                     tw.fromJSON(response);
                     if (isFavorited) {
-                        // tweet.setFaveCount("" + tweet.getFaveCount() + 1);
-                        // tvFaveCount.setText(tweet.getFaveCount());
+                        // if already favorited
+                        view.setSelected(false);
+                        if (tweet.getFaveCount() > 0) {
+                            tweet.setFaveCount(tweet.getFaveCount() - 1);
+                        }
+                        Log.d("TweetDetailsActivity", String.format("%s", tweet.getFaveCount()));
+                        tvFaveCount.setText(String.valueOf(tweet.getFaveCount()));
                         Log.d("TweetDetailsActivity", "changing favorited boolean to false");
                         isFavorited = false;
                     }
                     else {
-                        // tweet.setFaveCount("" + tweet.getFaveCount() + 1);
-                        tvFaveCount.setText(tweet.getFaveCount());
+                        view.setSelected(true);
+                         tweet.setFaveCount(tweet.getFaveCount() + 1);
+                          tvFaveCount.setText(String.valueOf(tweet.getFaveCount()));
                         Log.d("TweetDetailsActivity", "changing favorited boolean to true");
                         isFavorited = true;
                     }
@@ -117,16 +123,16 @@ public class TweetDetailsActivity extends AppCompatActivity {
         });
 
     }
-    // when favorites button is clicked
-    public void onRetweetClick (View view) {
+    // when retweet button is clicked
+    public void onRetweetClick (final View view) {
         // make api call for retweeting
         TwitterClient tc = new TwitterClient(this);
         tc.retweet(tweet.getUid(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TweetDetailsActivity", response.toString());
-                // Log.d("ComposeActivity1", String.format("%s", getIntent().getStringExtra("uid")));
                 Tweet tw = new Tweet();
+                view.setSelected(true);
                 try {
                     tw.fromJSON(response);
 

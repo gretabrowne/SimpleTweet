@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,10 +24,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
     private List<Tweet> mTweets;
     Context context;
     Bitmap.Config config;
+    public static boolean isFavorited = false;
 
     // pass in tweets array in constructor
     public TweetAdapter(List<Tweet> tweets) {
@@ -48,15 +51,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     // bind vals based on position
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         // get data based on position
         final Tweet tweet = mTweets.get(position);
+
         // populate views
         holder.tvUserName.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvDateTime.setText(tweet.getRelativeTimeAgo());
+        holder.faveCount.setText(String.valueOf(tweet.getFaveCount()));
 
-        Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+        GlideApp.with(context)
+                .load(tweet.user.profileImageUrl)
+                .into(holder.ivProfileImage);
 
         Glide.with(context).load(tweet.embedUrl).into(holder.ivEmbedImage);
 
@@ -71,7 +78,50 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 context.startActivity(intent);
             }
         });
+
+        // how to do this
+        holder.follows.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                    Intent intent = new Intent(context, FollowersActivity.class);
+                    intent.putExtra("screenName", tweet.user.screenName);
+                    context.startActivity(intent);
+                }
+        });
+
+        // how to do this
+        holder.friends.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                Intent intent = new Intent(context, FriendsActivity.class);
+                intent.putExtra("screenName", tweet.user.screenName);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.ivFavorite.setOnClickListener(new View.OnClickListener() {
+            public void onClick (final View v) {
+                if (!isFavorited) {
+                    v.setSelected(true);
+                    tweet.setFaveCount(tweet.getFaveCount() + 1);
+                    isFavorited = true;
+                }
+
+                else {
+                    v.setSelected(false);
+                    tweet.setFaveCount(tweet.getFaveCount() - 1);
+                    isFavorited = false;
+                }
+
+            }
+        });
+
+        holder.ivRetweet.setOnClickListener(new View.OnClickListener() {
+            public void onClick (final View v) {
+                v.setSelected(true);
+            }
+        });
     }
+
+
 
     // create viewholder class
 
@@ -82,6 +132,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         @BindView(R.id.tvDateTime) TextView tvDateTime;
         @BindView(R.id.ibReply) ImageButton ibReply;
         @BindView(R.id.ivEmbeddedImage) ImageView ivEmbedImage;
+        @BindView(R.id.tvFaveCount) TextView faveCount;
+        @BindView(R.id.button2) Button friends;
+        @BindView(R.id.button3) Button follows;
+        @BindView(R.id.ivFavorite2) ImageView ivFavorite;
+        @BindView(R.id.ivRetweet2) ImageView ivRetweet;
 
         public ViewHolder (View itemView) {
             super (itemView);
@@ -89,6 +144,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             itemView.setOnClickListener(this);
         }
 
+        @Override
         public void onClick (View view) {
             int position = getAdapterPosition();
             // ensure valid position
@@ -103,6 +159,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 context.startActivity(intent);
             }
         }
+
     }
 
     @Override

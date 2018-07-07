@@ -73,26 +73,18 @@ public class TwitterClient extends OAuthBaseClient {
 		String apiUrl = getApiUrl("statuses/update.json");
 		RequestParams params = new RequestParams();
 		params.put("status", message);
-		// Log.d("TwitterClient2", String.format("%s", id));
 		params.put("in_reply_to_status_id", id);
 		client.post(apiUrl, params, handler);
 	}
 
 	public void favoriteTweet (boolean isFavorited, long id, AsyncHttpResponseHandler handler) {
 		if (!isFavorited) {
+			// not favorited yet
 			Log.i("TwitterClient", "favoriting tweet");
 			String apiUrl = getApiUrl("favorites/create.json");
 			RequestParams params = new RequestParams();
 			params.put("id", id);
 			client.post(apiUrl, params, handler);
-
-			// update favorited info
-//			String otherApiUrl = getApiUrl("statuses/update.json");
-//			RequestParams params2 = new RequestParams();
-//			params.put("id", id);
-//			params.put("favorited", true);
-//			params.put("status", message);
-//			client.post(otherApiUrl, params2, handler);
 		}
 		else {
 			// favorited already
@@ -101,14 +93,6 @@ public class TwitterClient extends OAuthBaseClient {
 			RequestParams params = new RequestParams();
 			params.put("id", id);
 			client.post(apiUrl, params, handler);
-
-			// update favorited info
-//			String otherApiUrl = getApiUrl("statuses/update.json");
-//			RequestParams params2 = new RequestParams();
-//			params.put("id", id);
-//			params.put("favorited", false);
-//			params.put("status", message);
-//			client.post(otherApiUrl, params2, handler);
 		}
 	}
 
@@ -119,4 +103,21 @@ public class TwitterClient extends OAuthBaseClient {
         params.put("id", id);
         client.post(apiUrl, params, handler);
     }
+
+	public void getFollowers(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("followers/list.json");
+		Log.d("getFollowers", "here");
+		Log.d("getFollowers", String.format("%s", screenName));
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
+		client.get(apiUrl, params, handler);
+	}
+
+	public void getFriends(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("friends/list.json");
+		RequestParams params = new RequestParams();
+		params.put("screen_name", screenName);
+		client.get(apiUrl, params, handler);
+	}
 }

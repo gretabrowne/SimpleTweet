@@ -19,7 +19,7 @@ public class Tweet {
     public User user;
     public String createdAt;
     public String embedUrl;
-    public String faveCount;
+    public int faveCount;
 
     public Tweet() {}
     // deserialize the data
@@ -31,7 +31,7 @@ public class Tweet {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
-        tweet.faveCount = jsonObject.getString("favorite_count");
+        tweet.faveCount = jsonObject.getInt("favorite_count");
         JSONObject entities = jsonObject.getJSONObject("entities");
         try {
             JSONArray media = entities.getJSONArray("media");
@@ -80,7 +80,11 @@ public class Tweet {
         return createdAt;
     }
 
-    public String getFaveCount() {
+    public int getFaveCount() {
         return faveCount;
+    }
+
+    public void setFaveCount(int faveCount) {
+        this.faveCount = faveCount;
     }
 }

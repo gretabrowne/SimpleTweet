@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".TweetDetailsActivity">
 
     <ImageView
@@ -26,12 +27,14 @@
     <TextView
         android:id="@+id/tvBody2"
         android:layout_width="383dp"
-        android:layout_height="99dp"
+        android:layout_height="179dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/ivProfile"
         android:autoLink="all"
+        android:fontFamily="@font/roboto_light"
         android:linksClickable="true"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/tvCreatedAt"
@@ -53,32 +56,36 @@
 
     <ImageButton
         android:id="@+id/ibFavorite"
-        android:layout_width="63dp"
-        android:layout_height="56dp"
+        android:layout_width="61dp"
+        android:layout_height="55dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/tvBody2"
+        android:backgroundTint="@android:color/white"
+        android:cropToPadding="true"
+        android:elevation="0dp"
         android:onClick="onFavoritesClick"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/favorite_selector" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/favorite_selector" />
 
 
     <ImageButton
         android:id="@+id/ibRetweet"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="48dp"
+        android:layout_height="49dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/tvBody2"
-        android:layout_marginEnd="105dp"
+        android:layout_marginEnd="117dp"
+        android:background="@color/white"
         android:onClick="onRetweetClick"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_vector_retweet" />
+        app:srcCompat="@drawable/retweet_selector" />
 
     <TextView
         android:id="@+id/tvFaveCount"
         android:layout_width="31dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/tvCreatedAt"
-        android:layout_marginEnd="68dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/ibFavorite"
+        android:fontFamily="@font/roboto_light"
         android:text="TextView" />
 </RelativeLayout>

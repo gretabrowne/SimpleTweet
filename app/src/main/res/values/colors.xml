@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#ffffff</color>
     <color name="yellow">#FFFF00</color>
     <color name="fuchsia">#FF00FF</color>
     <color name="red">#FF0000</color>
@@ -25,7 +25,7 @@
     <color name="medium_red">#ffe0245e</color>
     <color name="medium_red_30">#4de0245e</color>
     <color name="medium_red_50">#80e0245e</color>
-    <color name="twitter_blue">#ff1da1f2</color>
+    <color name="twitter_blue">#1da1f2</color>
     <color name="twitter_blue_30">#4d1da1f2</color>
     <color name="twitter_blue_50">#801da1f2</color>
     <color name="twitter_blue_fill_pressed">#ff1370a9</color>
