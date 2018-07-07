@@ -47,7 +47,14 @@ The following **bonus** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://i.imgur.com/qJR4jEc.gif' title='Log-In' width='' alt='Video Walkthrough' />
+Shows OAuth login. 
+<img src='https://i.imgur.com/E7pzhMt.gif' title='Compose, Reply, Favorite, Retweet' width='' alt='Video Walkthrough' /> 
+Shows composing, replying, favoriting and retweeting (with favorites count updating), detail view, pull-to-refresh, and clickable links.
+<img src='https://i.imgur.com/GbA7bu5.gif' title='Followers/Following' width='' alt='Video Walkthrough' /> 
+Shows the followers and following (friends) views.
+<img src='https://i.imgur.com/mILeboz.gif' title='Image Embedding' width='' alt='Video Walkthrough' />
+Shows embedded image. 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
